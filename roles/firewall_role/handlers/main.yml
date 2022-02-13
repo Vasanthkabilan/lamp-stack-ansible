@@ -1,0 +1,11 @@
+---
+# handlers file for firewall_role
+- name: Start firewalld 
+  service:
+    name: firewalld
+    state: started
+
+- name: Enable firewalld
+  systemd:
+    name: firewalld
+    enabled: yes

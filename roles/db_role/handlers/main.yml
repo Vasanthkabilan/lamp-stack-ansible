@@ -1,0 +1,11 @@
+---
+# handlers file for db_role
+- name: Start dbserver
+  service:
+    name: mariadb
+    state: started
+
+- name: Enable dbserver
+  systemd:
+    name: mariadb
+    enabled: yes

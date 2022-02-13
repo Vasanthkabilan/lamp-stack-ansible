@@ -1,0 +1,28 @@
+---
+# tasks file for firewall_role
+- name: Upgrade all apt packages
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+- name: Install firewalld
+  apt:
+    name: firewalld
+    state: present
+  notify:
+    - Start firewalld 
+    - Enable firewalld
+
+- name: Configuring firewall for Database
+  firewalld:
+    port: 3306/tcp
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Configuring firewall for apache2
+  firewalld:
+    port: 80/tcp
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled

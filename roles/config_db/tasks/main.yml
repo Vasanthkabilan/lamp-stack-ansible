@@ -1,0 +1,24 @@
+---
+# tasks file for config_db
+- name: Create a new database with name "{{db_name}}"
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    name: "{{db_name}}"
+    state: present
+
+- name: Create new user "{{db_user}}"
+  mysql_user:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    host: localhost
+    name: "{{db_user}}"
+    password: "{{db_passwd}}"
+    priv: '*.*:ALL,GRANT'
+    state: present
+
+- name: import ecom-table sql file
+  mysql_db:
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: import
+    name: "{{db_name}}"
+    target: "files/db-load-script.sql"
+  ignore_errors: True

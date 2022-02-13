@@ -1,0 +1,16 @@
+---
+# tasks file for dependencies_role
+- name: install python-pip
+  apt: 
+    name: 
+      - python3-pip
+      - php
+      - php-mysql
+    state: present
+
+- name: Make sure pymysql is present
+  pip:
+    name: 
+      - pymysql
+      - mysql-connector
+    state: present

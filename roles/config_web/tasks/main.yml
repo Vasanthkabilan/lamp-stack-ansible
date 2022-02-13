@@ -1,0 +1,36 @@
+---
+# tasks file for config_web
+- name: Deploy and Configure web
+  apt:
+    name: apache2
+    state: present
+  notify:
+    - Start apache
+    - Enable apache
+
+- name: cloning a git repo
+  git: 
+    repo: 'https://github.com/Vasanthkabilan/learning-app-ecommerce.git'
+    dest: /opt
+    update: yes
+
+- name: Changing index.directory
+  template:
+    src: "templates/dir.conf.j2"
+    dest: /etc/apache2/mods-enabled/dir.conf
+  notify:
+    - Reload Apache
+
+- name: Delete index html file
+  file:
+    path: /var/www/html/index.html
+    state: absent
+  ignore_errors: True
+
+- name: copy index file 
+  command: "cp /opt/index.php  /var/www/html"
+
+- name: Changing host in index.php
+  template:
+    src: "templates/index.php.j2"
+    dest: /var/www/html/index.php
